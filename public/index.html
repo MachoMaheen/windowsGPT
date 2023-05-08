@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="script.js" ></script>
+
     
     <title>Document</title>
     <style>
@@ -28,7 +30,7 @@
           id="promptTextarea"
           name="Name"
           style="
-            width: 782px;
+            width: 755px;
             height: 70px;
             background-color: rgb(65, 65, 65);
             font-size: xx-large;
@@ -37,9 +39,6 @@
           "
           placeholder="Enter your prompt"
         />
-        <div class="loading-animation">
-          <h3 style="color: aliceblue;">Loading...</h3>
-        </div>
       </div>
     </div>
     <div class="div" style="margin-top: 15px">
@@ -53,25 +52,9 @@
           background-color: rgb(65, 65, 65);
           color: aliceblue;
           font-family: sans-serif;
-          resize: none;
-          display: none; /* Initially hide the response text area */
+          display: none; resize: none;
         "
       ></textarea>
     </div>
-    <script>
-      const focusTextBox = () => {
-        const textBox = document.getElementById("promptTextarea");
-        textBox.focus();
-      };
-
-      window.onload = () => {
-        focusTextBox();
-      };
-    </script>
-    <script type="module" src="script.js" async></script>
-    <script type="module" >
-    //write a js file to retrieve the data from a input field when Enter key is pressed
-    // https://stackoverflow.com/questions/52561202/how-to-get-data-from-input-field-on-enter-key-press
-    </script>
   </body>
 </html>

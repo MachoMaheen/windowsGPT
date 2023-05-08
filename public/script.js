@@ -1,24 +1,23 @@
-// import openai from 'openai';
-import { Configuration, OpenAIApi } from "openai";
-dotenv.config()
-const configuration = new Configuration({
-  // organization: "org-Dx5AwmroyN0U4fOu6Pu8T4yb",
-  apiKey: process.env.API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-const response = await openai.listEngines();
-console.log(response.data);
-// const openaiInstance = new openai.OpenAIApi(
-//   new openai.Configuration({
-//     apiKey: process.env.API_KEY,
-//   })
-// );
+const OPEN_AI_KEY = import.meta.env.VITE_SOME_KEY;
+
+const focusTextBox = () => {
+  const textBox = document.getElementById("promptTextarea");
+  textBox.focus();
+};
+
+window.onload = () => {
+  focusTextBox();
+};
+
+console.log("in script");
 
 let prompt;
 
 let promptTextarea = document.getElementById("promptTextarea");
 let responseTextarea = document.getElementById("responseTextarea");
 let loadingAnimation = document.querySelector(".loading-animation");
+
+// console.log("value is " +promptTextarea.value)
 
 async function processResponse() {
   prompt = promptTextarea.value;
@@ -27,50 +26,83 @@ async function processResponse() {
   if (prompt === "") {
     return;
   }
-  promptTextarea.value = "";
-  // Show loading animation
-  loadingAnimation.style.display = "block";
-  responseTextarea.style.display = "none";
 
-  const createChatCompletion = async (prompt) => {
-    console.log("response sent with " + prompt);
-    const completion = await openai.createCompletion({
-      engine: "text-davinci-003",
-      prompt: prompt,
-      maxTokens: 100,
-      n: 1,
-      stop: ["\n"],
-    });
+  let open_ai_response, responseContent;
 
-    return completion.choices[0].text;
-  };
+  openai_test();
 
-  const responseContent = await createChatCompletion(prompt);
+  function openai_test() {
+    var url = "https://api.openai.com/v1/chat/completions";
 
-  // Hide loading animation and show response
-  loadingAnimation.style.display = "none";
-  responseTextarea.style.display = "block";
-  responseTextarea.value = responseContent;
-}
-try {
-  promptTextarea.addEventListener("keydown", keyPress, false);
-} catch (e) {
-  promptTextarea.attachEvent("onkeydown", keyPress);
-}
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
 
-function keyPress(e) {
-  e.preventDefault();
-  if (e.keyCode === 13) {
-    console.log("Enter key was pressed");
-    processResponse();
-  } else {
-    return;
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader(
+      "Authorization",
+      "Bearer OPEN_AI_KEY_HERE"
+    );
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          open_ai_response = xhr.responseText;
+          const jsonObject = JSON.parse(open_ai_response);
+          responseContent = jsonObject.choices[0].message.content;
+          console.log(responseContent);
+
+          responseTextarea.value = responseContent;
+          responseTextarea.style.display = "block";
+        } else {
+          console.error("Error:", xhr.status);
+        }
+      }
+    };
+
+    var data = `{
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": "${prompt}"}]
+  }`;
+
+    xhr.send(data);
   }
 }
-promptTextarea.addEventListener("keyup", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
+
+let keyD = false,
+  keyU = false;
+
+document.addEventListener(
+  "keyup",
+  (event) => {
+    const keyName = event.key;
+
+    if (keyName === "Enter") {
+      keyU = true;
+      checkKeys();
+    }
+  },
+  false
+);
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    const keyName = event.key;
+
+    if (keyName === "Enter") {
+      keyD = true;
+      checkKeys();
+    }
+  },
+  false
+);
+
+function checkKeys() {
+  if (keyU === true && keyD === true) {
+    console.log("Enter key pressed and released.");
+
     processResponse();
   }
-});
+}
+
 promptTextarea.value = "";
