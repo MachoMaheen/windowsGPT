@@ -1,15 +1,16 @@
 // import openai from 'openai';
 import { Configuration, OpenAIApi } from "openai";
+dotenv.config()
 const configuration = new Configuration({
   // organization: "org-Dx5AwmroyN0U4fOu6Pu8T4yb",
-  apiKey: "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",
+  apiKey: process.env.API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 const response = await openai.listEngines();
 console.log(response.data);
 // const openaiInstance = new openai.OpenAIApi(
 //   new openai.Configuration({
-//     apiKey: "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",
+//     apiKey: process.env.API_KEY,
 //   })
 // );
 
