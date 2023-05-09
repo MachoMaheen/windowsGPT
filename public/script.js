@@ -38,7 +38,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer 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"
+      "Bearer OPEN_AI_KEY_HERE"
     );
 
     xhr.onreadystatechange = function () {
@@ -48,7 +48,7 @@ async function processResponse() {
           const jsonObject = JSON.parse(open_ai_response);
           responseContent = jsonObject.choices[0].message.content;
           console.log(responseContent);
-
+          prompt="";
           animationRot.style.display = "none";
           searchIcon.style.display = "block";
           responseTextarea.value = responseContent;

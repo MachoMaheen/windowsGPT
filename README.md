@@ -23,9 +23,7 @@ https://drive.google.com/file/d/1co2OU57tlmI7pD0ONQ3gVDLy2J-Ib2cL/view?usp=share
 - Our project comprises a central application built on Electron framework, housing the main process. Within this framework, we employ the globalShortcut() function of Electron to monitor a designated keyboard shortcut. Once the shortcut is successfully registered, our application generates a child frameless transparent window, designed with two text areas: the promptTextArea and the responseTextArea. Initially, the responseTextArea remains hidden from view.
 - To engage with our system, users input their desired prompt into the promptTextArea. This prompt is subsequently transmitted as a request to the OpenAI API. Upon receiving a response from the API, our application unveils the responseTextArea, displaying the generated response within it
 
-![WindowsGPT demo](https://user-images.githubusercontent.com/92015765/236737353-9451e30b-6923-4d70-8388-1606c2159764.gif)
-
-
+![WindowsGPT demo](Demo.gif)
 
 ## Libraries used
 
