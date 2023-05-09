@@ -1,5 +1,3 @@
-const OPEN_AI_KEY = import.meta.env.VITE_SOME_KEY;
-
 const focusTextBox = () => {
   const textBox = document.getElementById("promptTextarea");
   textBox.focus();
@@ -15,7 +13,7 @@ let prompt;
 
 let promptTextarea = document.getElementById("promptTextarea");
 let responseTextarea = document.getElementById("responseTextarea");
-let loadingAnimation = document.querySelector(".loading-animation");
+let loadingAnimation = document.getElementById("animationRot");
 
 // console.log("value is " +promptTextarea.value)
 
@@ -40,7 +38,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer OPEN_AI_KEY_HERE"
+      "Bearer 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"
     );
 
     xhr.onreadystatechange = function () {
@@ -51,6 +49,8 @@ async function processResponse() {
           responseContent = jsonObject.choices[0].message.content;
           console.log(responseContent);
 
+          animationRot.style.display = "none";
+          searchIcon.style.display = "block";
           responseTextarea.value = responseContent;
           responseTextarea.style.display = "block";
         } else {
@@ -64,6 +64,9 @@ async function processResponse() {
     "messages": [{"role": "user", "content": "${prompt}"}]
   }`;
 
+     searchIcon.style.display = "none";
+
+    animationRot.style.display = "block";
     xhr.send(data);
   }
 }
