@@ -87,7 +87,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer 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"
+      "Bearer open_ai-key"
     );
 
     xhr.onreadystatechange = function () {
