@@ -3,8 +3,13 @@ const focusTextBox = () => {
   textBox.focus();
 };
 
+
 window.onload = () => {
   focusTextBox();
+
+
+
+
 };
 
 console.log("in script");
@@ -16,6 +21,50 @@ let responseTextarea = document.getElementById("responseTextarea");
 let loadingAnimation = document.getElementById("animationRot");
 
 // console.log("value is " +promptTextarea.value)
+
+function expandResponseTextBox(){
+
+    responseTextarea.style.height = 'auto'; // Reset the height to auto
+    responseTextarea.style.height = `${responseTextarea.scrollHeight - 38}px`; // Set the height to match the content
+
+};
+
+
+
+
+function displayText(text, delay) {
+  let currentText = '';
+  let index = 0;
+
+  function typeText() {
+    currentText += text[index];
+    responseTextarea.textContent = currentText;
+    expandResponseTextBox()
+    index++;
+
+  //   const computedStyle = window.getComputedStyle(responseTextarea);
+  // const textBoxWidth = computedStyle.width;
+
+
+
+
+// console.log("res: "+ responseTextarea.value.length + "width : "+textBoxWidth)
+//     if(responseTextarea.value.length + 20 >= responseTextarea.style.width)
+//     {
+//       console.log(responseTextarea.textContent.length)
+//       expandResponseTextBox();
+//     }
+
+
+    if (index < text.length) {
+      setTimeout(typeText, delay);
+    }
+  }
+
+  typeText();
+}
+
+
 
 async function processResponse() {
   prompt = promptTextarea.value;
@@ -38,7 +87,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer OPEN_AI_KEY_HERE"
+      "Bearer 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"
     );
 
     xhr.onreadystatechange = function () {
@@ -51,8 +100,18 @@ async function processResponse() {
           prompt="";
           animationRot.style.display = "none";
           searchIcon.style.display = "block";
-          responseTextarea.value = responseContent;
+
+
+
+          
+
+
+
+
           responseTextarea.style.display = "block";
+
+          displayText(responseContent, 10);
+          // responseTextarea.value = responseContent;
         } else {
           console.error("Error:", xhr.status);
         }
