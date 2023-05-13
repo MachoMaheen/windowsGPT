@@ -12,6 +12,8 @@ window.onload = () => {
 
 };
 
+
+
 console.log("in script");
 
 let prompt;
@@ -22,13 +24,29 @@ let loadingAnimation = document.getElementById("animationRot");
 
 // console.log("value is " +promptTextarea.value)
 
+const electron = require("electron");
+const ipc = electron.ipcRenderer
+
 function expandResponseTextBox(){
 
     responseTextarea.style.height = 'auto'; // Reset the height to auto
     responseTextarea.style.height = `${responseTextarea.scrollHeight - 38}px`; // Set the height to match the content
+    
+    ipc.send('bleeeeeh' , responseTextarea.scrollHeight - 38);
 
 };
 
+
+
+
+
+
+
+
+
+
+
+// const ipc = electron.ipcRenderer
 
 
 
@@ -42,18 +60,10 @@ function displayText(text, delay) {
     expandResponseTextBox()
     index++;
 
-  //   const computedStyle = window.getComputedStyle(responseTextarea);
-  // const textBoxWidth = computedStyle.width;
 
 
 
 
-// console.log("res: "+ responseTextarea.value.length + "width : "+textBoxWidth)
-//     if(responseTextarea.value.length + 20 >= responseTextarea.style.width)
-//     {
-//       console.log(responseTextarea.textContent.length)
-//       expandResponseTextBox();
-//     }
 
 
     if (index < text.length) {
@@ -87,7 +97,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer open_ai-key"
+      "Bearer open_ai_key"
     );
 
     xhr.onreadystatechange = function () {
@@ -100,13 +110,6 @@ async function processResponse() {
           prompt="";
           animationRot.style.display = "none";
           searchIcon.style.display = "block";
-
-
-
-          
-
-
-
 
           responseTextarea.style.display = "block";
 
@@ -168,3 +171,4 @@ function checkKeys() {
 }
 
 promptTextarea.value = "";
+

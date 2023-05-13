@@ -1,7 +1,11 @@
-import { app, BrowserWindow, globalShortcut, shell, ipcMain } from "electron";
+import { app, BrowserWindow, globalShortcut, shell, ipcMain , ipcRenderer } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
+// import { getSharedData, setSharedData } from '../../public/script.d.js';
+
+
+
 
 // The built directory structure
 //
@@ -18,6 +22,7 @@ process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
 process.env.PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? join(process.env.DIST_ELECTRON, "../public")
   : process.env.DIST;
+
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
@@ -134,11 +139,19 @@ ipcMain.handle("open-win", (_, arg) => {
 // });
 
 const path = require("path");
-const url_new = require("url");
-let shortcutRegistered = false;
 let window: BrowserWindow | null = null;
 
+
+
+
+
+
+
+
 app.on("ready", () => {
+
+
+
   // Register a global keyboard shortcut
   globalShortcut.register("Ctrl+Alt+T", () => {
     if (window !== null) {
@@ -149,23 +162,50 @@ app.on("ready", () => {
       win?.hide();
       // If no window is open, open the specified path and store a reference to the window
       window = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 793,
+        height: 145,
         transparent: true,
         skipTaskbar: true,
-        frame: false, // Set the frame option to false to create a frameless window
+        frame: false, 
         resizable: false,
+        webPreferences: {
+          nodeIntegration: true,
+            contextIsolation: false,
+        },
+        x:390,
+        y:150,
       });
 
       const filePath = path.resolve("public", "index.html");
 
       window.loadURL(filePath);
+
+
+      
+      ipcMain.on('bleeeeeh', function(event, data) {
+        // Perform actions with the received data
+        window?.setSize(793, data+195)
+
+      });
+
+
+      window.on('blur', () => {
+        // Quit the app when the window loses focus
+        window?.close();
+      });
+
       window.on("closed", () => {
         window = null;
       });
     }
   });
+
+
+
+
 });
+
+
 
 // Unregister the shortcut when the app is about to quit
 app.on("will-quit", () => {
