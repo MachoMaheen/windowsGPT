@@ -4,22 +4,21 @@ import * as fs from 'fs';
 export default function Setup() {
 
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const contents = e.target?.result as string;
-        const dispkey = document.getElementById("apiTextBox") as HTMLInputElement;
-        if (dispkey.value === "") {
-          dispkey.value = contents;
-          console.log(contents);
-        }
-      };
-      reader.readAsText(file);
-    }
+  function handleFileChange() {
+
+    fs.readFile('tp.txt', (err, inputD) => {
+
+      if (err) throw err;
+      
+      const content = (document.getElementById("apiTextBox") as HTMLInputElement)
+      if(content.value === "")
+      {
+        content.value = inputD.toString();
+      }
+   })
   }
   
+  handleFileChange();
 
   function handleClick()
   {

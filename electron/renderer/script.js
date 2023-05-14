@@ -8,9 +8,20 @@ window.onload = () => {
   focusTextBox();
 
 
-
-
 };
+
+
+
+let api_key;
+
+const fs = require('fs')
+fs.readFile('tp.txt', (err, inputD) => {
+   if (err) throw err;
+   api_key= inputD.toString().trim()
+
+   console.log(api_key)
+
+})
 
 
 
@@ -38,14 +49,6 @@ function expandResponseTextBox(){
 
 
 
-
-
-
-
-
-
-
-
 // const ipc = electron.ipcRenderer
 
 
@@ -59,12 +62,6 @@ function displayText(text, delay) {
     responseTextarea.textContent = currentText;
     expandResponseTextBox()
     index++;
-
-
-
-
-
-
 
     if (index < text.length) {
       setTimeout(typeText, delay);
@@ -97,7 +94,7 @@ async function processResponse() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader(
       "Authorization",
-      "Bearer open_ai_key"
+      `Bearer ${api_key}`
     );
 
     xhr.onreadystatechange = function () {

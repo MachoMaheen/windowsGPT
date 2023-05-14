@@ -163,7 +163,7 @@ app.on("ready", () => {
       // If no window is open, open the specified path and store a reference to the window
       window = new BrowserWindow({
         width: 793,
-        height: 145,
+        height: 165,
         transparent: true,
         skipTaskbar: true,
         frame: false, 
@@ -184,7 +184,7 @@ app.on("ready", () => {
       
       ipcMain.on('bleeeeeh', function(event, data) {
         // Perform actions with the received data
-        window?.setSize(793, data+195)
+        window?.setSize(793, data+200)
 
       });
 
