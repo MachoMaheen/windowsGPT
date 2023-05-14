@@ -27,7 +27,7 @@ function App() {
   // )
 
   return (
-    
+      
     <Routes>
       <Route path="auth/*" element={<AuthLayout />} />
       <Route path="admin/*" element={<AdminLayout />} />

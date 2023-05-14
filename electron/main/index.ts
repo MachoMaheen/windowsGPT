@@ -48,6 +48,9 @@ const indexHtml = join(process.env.DIST, "index.html");
 
 async function createWindow() {
   win = new BrowserWindow({
+  autoHideMenuBar: true,
+
+
     title: "Main window",
     icon: join(process.env.PUBLIC, "favicon.ico"),
     webPreferences: {
@@ -60,6 +63,31 @@ async function createWindow() {
     },
   });
 
+  win.webContents.on('dom-ready', () => {
+    win?.webContents.insertCSS(`
+      ::-webkit-scrollbar {
+        width: 5px; /* Adjust the width as desired */
+      }
+  
+      ::-webkit-scrollbar-track {
+        background-color: #f1f1f1; /* Color of the track */
+      }
+  
+      ::-webkit-scrollbar-thumb {
+        background-color: #888; /* Color of the scrollbar */
+      }
+    `);
+  });
+  
+  win?.on('close', (event: Electron.Event) => {
+    // Prevent the default behavior of closing the window
+    event.preventDefault();
+  
+    // Hide the window instead of closing it
+    win?.hide();
+  });
+
+
   if (url) {
     // electron-vite-vue#298
     win.loadURL(url);
@@ -67,6 +95,8 @@ async function createWindow() {
     win.webContents.openDevTools();
   } else {
     win.loadFile(indexHtml);
+    
+    
   }
 
   // Test actively push message to the Electron-Renderer
@@ -85,6 +115,8 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow);
+
+
 
 app.on("window-all-closed", () => {
   win = null;
@@ -111,6 +143,7 @@ app.on("activate", () => {
 // New window example arg: new windows url
 ipcMain.handle("open-win", (_, arg) => {
   const childWindow = new BrowserWindow({
+
     webPreferences: {
       preload,
       nodeIntegration: true,
@@ -118,25 +151,23 @@ ipcMain.handle("open-win", (_, arg) => {
     },
   });
 
+
+
   if (process.env.VITE_DEV_SERVER_URL) {
     childWindow.loadURL(`${url}#${arg}`);
   } else {
     childWindow.loadFile(indexHtml, { hash: arg });
   }
+
+
+  
+
+
 });
 
-// app.on("ready", () => {
-//   // Register a global keyboard shortcut
-//   globalShortcut.register("Ctrl+Alt+T", () => {
-//     // Open the application using the shell module
-//     shell.openPath("");
-//   });
-// });
 
-// // Unregister the shortcut when the app is about to quit
-// app.on("will-quit", () => {
-//   globalShortcut.unregister("Ctrl+Alt+T");
-// });
+
+
 
 const path = require("path");
 let window: BrowserWindow | null = null;
